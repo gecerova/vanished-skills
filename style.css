@@ -1,0 +1,58 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f4f0;
+  color: #333;
+  margin: 0;
+}
+header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: #e7e3da;
+}
+#logo { height: 50px; margin-right: auto; }
+.filters button {
+  margin-left: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #c9b89f;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.filters button.active {
+  background: #8d7b68;
+}
+main#grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+.entry {
+  width: 90%;
+  max-width: 600px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.entry img {
+  width: 100%;
+  object-fit: cover;
+}
+.entry .content {
+  padding: 1rem;
+}
+.entry h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+}
+.entry p {
+  margin: 0.25rem 0;
+  font-size: 1rem;
+}
+
