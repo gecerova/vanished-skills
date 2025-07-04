@@ -1,17 +1,8 @@
-# Ottoman Lost Professions Website
+Welcome to our virtual mini-museum!
+ This project showcases a curated selection of historical ceramic artifacts from the Ottoman Empire. Each piece reflects the rich artistic heritage, craftsmanship, and cultural layers that developed between the 14th and early 20th centuries.
 
-This is a static site that reads data from a Google Spreadsheet via Sheet.best and displays entries as vertical cards. You can filter by Profession or Craft. Deployed on GitHub Pages.
+The Ottoman Empire was a vast and diverse society where craftsmanship held a central place in both economic production and cultural expression. Many of these traditional crafts were passed down through generations via master-apprentice relationships (usta-çırak ilişkisi) and were often organized within the guild system (lonca teşkilatı). These crafts not only fulfilled practical needs but also served as markers of social identity, aesthetic refinement, and spiritual devotion.
 
-## Setup
+Our aim is to offer an accessible and informative glimpse into the traditions of the Ottoman world. The selected items vary in origin, function, and style — from architectural tiles to household pottery — yet all reveal the empire’s unique aesthetic and cultural identity.
+Explore the collection below and discover how Ottoman culture served not only as a source of glory but also became a lasting symbol of beauty, power, and tradition.
 
-1. Clone repo.
-2. Replace `LOGO_URL_HERE` in `index.html` with your logo’s URL.
-3. Commit and push to GitHub.
-4. In repo settings, enable GitHub Pages from `main` branch root.
-5. Visit `https://<yourusername>.github.io/<repo>`.
-
-## How it works
-
-- Fetches data from Sheet.best as JSON.
-- Filters using dropdown buttons.
-- Renders cards with entry name, category, image, description.
