@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ottoman Lost Professions</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Ottoman Lost Professions</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    </head>
 <body>
-  <header>
-    <img id="logo" src="https://raw.githubusercontent.com/gecerova/vanished-skills/b3a50a4630aba1304fb58b869fd1a04c6ee977f0/my-logo.jpeg" alt="Logo" />
-    <div class="filters">
-      <button data-filter="all" class="active">All</button>
-      <button data-filter="Profession">Profession</button>
-      <button data-filter="Craft">Craft</button>
-    </div>
-  </header>
-  <main id="grid"></main>
-  <script src="script.js"></script>
+    <header>
+        <img id="logo" src="https://raw.githubusercontent.com/gecerova/vanished-skills/main/my-logo.jpeg" alt="Logo" />
+        <div class="filters">
+            <button data-filter="all" class="active">All</button>
+            <button data-filter="Profession">Profession</button>
+            <button data-filter="Craft">Craft</button>
+        </div>
+    </header>
+
+    <main id="grid">
+        <p id="loading-message">Loading professions...</p>
+    </main>
+
+    <script src="script.js"></script>
+
+    <footer>
+        <p>&copy; 2025 Ottoman Lost Professions. All rights reserved.</p>
+    </footer>
 </body>
 </html>
