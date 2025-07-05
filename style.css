@@ -52,7 +52,32 @@ main#grid {
   font-size: 1.5rem;
 }
 .entry p {
-  margin: 0.25rem 0;
+  margin: 0.25rem 0;/* In your style.css */
+
+#grid {
+    display: grid;
+    /* Adjust columns based on screen size */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Auto-fit columns, min width 280px */
+    gap: 20px; /* Space between grid items */
+    padding: 20px; /* Padding around the whole grid */
+    max-width: 1200px; /* Max width for your content */
+    margin: 20px auto; /* Center the grid on larger screens */
+}
+
+.entry {
+    background-color: #fff; /* White background for each card */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 8px; /* Slightly rounded corners */
+    overflow: hidden; /* Ensures image corners are also rounded */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow */
+    display: flex; /* To arrange image and content nicely */
+    flex-direction: column; /* Stack image on top of content */
+    transition: transform 0.2s ease-in-out; /* Smooth hover effect */
+}
+
+.entry:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+}
   font-size: 1rem;
 }
 
