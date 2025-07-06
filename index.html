@@ -6,14 +6,14 @@
     <title>Ottoman Lost Professions</title>
     <link rel="stylesheet" href="style.css" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-</head>
+    </head>
 <body>
     <header>
         <img id="logo" src="https://raw.githubusercontent.com/gecerova/vanished-skills/main/my-logo.jpeg" alt="Logo" />
         
-        <!-- Arama kutusu eklendi -->
-        <input type="text" id="searchInput" placeholder="Search entries..." />
-        
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search professions...">
+        </div>
         <div class="filters">
             <button data-filter="all" class="active">All</button>
             <button data-filter="Profession">Profession</button>
@@ -24,6 +24,7 @@
 
     <main id="grid">
         <p id="loading-message">Loading professions...</p>
+        <p id="no-results-message" style="display: none;">No professions found matching your search.</p>
     </main>
 
     <div id="itemModal" class="modal">
@@ -32,7 +33,6 @@
             <img id="modalImage" src="" alt="Full Profession Image">
             <div class="modal-text">
                 <h2 id="modalTitle"></h2>
-                <p><strong>Category:</strong> <span id="modalCategory"></span></p>
                 <p id="modalDescription"></p>
             </div>
         </div>
@@ -44,4 +44,3 @@
     </footer>
 </body>
 </html>
-
