@@ -402,4 +402,8 @@ footer {
         font-size: 1em;
     }
 }
+#itemModal {
+    display: none;
+}
+
 
