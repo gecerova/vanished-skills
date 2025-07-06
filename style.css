@@ -28,12 +28,36 @@ header {
     background-color: var(--secondary-color);
     box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Add a subtle shadow to header */
     flex-wrap: wrap; /* Allow header content to wrap on smaller screens */
-    justify-content: space-between; /* Space out logo and filters */
+    justify-content: space-between; /* Space out logo, search, and filters */
+    gap: 10px; /* Space between header items */
 }
 
 #logo {
     height: 50px;
-    margin-right: 1rem; /* Space between logo and filters */
+    margin-right: 1rem; /* Space between logo and search/filters */
+}
+
+/* --- Search Bar Styles --- */
+.search-container {
+    flex-grow: 1; /* Allows search bar to take available space */
+    max-width: 400px; /* Limit max width for aesthetic */
+    min-width: 200px; /* Ensure it's not too small */
+}
+
+#searchInput {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-light);
+    border-radius: 25px; /* Pill shape */
+    font-size: 1em;
+    outline: none; /* Remove default focus outline */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.08); /* Subtle inner shadow */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#searchInput:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(141, 123, 104, 0.2); /* Soft focus glow */
 }
 
 /* --- Filter Buttons --- */
@@ -88,6 +112,17 @@ header {
     max-width: 1200px; /* Max width for your content */
     margin: 30px auto; /* Center the grid on larger screens, add vertical space */
 }
+
+/* --- Message for no search results --- */
+#no-results-message {
+    text-align: center;
+    grid-column: 1 / -1; /* Make message span all columns */
+    padding: 20px;
+    font-size: 1.1em;
+    color: var(--text-light);
+    display: none; /* Hidden by default, JS will show it */
+}
+
 
 /* --- Individual Profession Entry Card --- */
 .entry {
@@ -190,7 +225,7 @@ footer {
     background-color: rgba(0,0,0,0.7); /* Black w/ opacity - dim background */
     backdrop-filter: blur(5px); /* Optional: blur background for a modern look */
     -webkit-backdrop-filter: blur(5px); /* For Safari */
-    display: flex; /* Use flexbox to center content when visible */
+    /* display: flex;  -- This is set by JS when modal is active */
     justify-content: center;
     align-items: center;
     padding: 20px; /* Padding around the modal content */
@@ -290,9 +325,14 @@ footer {
     }
     header {
         flex-direction: row; /* Keep header elements in a row */
-        justify-content: space-between;
+        justify-content: space-between; /* Space out elements */
+        align-items: center; /* Align items vertically */
+    }
+    .search-container {
+        order: 0; /* Default order */
     }
     .filters {
+        order: 1; /* Default order */
         justify-content: flex-end; /* Align buttons to the right */
     }
 }
@@ -307,8 +347,8 @@ footer {
     }
 }
 
-/* Very small mobile screens */
-@media (max-width: 480px) {
+/* Very small mobile screens (e.g., iPhone SE, older phones) */
+@media (max-width: 600px) { /* Adjusted breakpoint for better stacking on narrow screens */
     #grid {
         padding: 15px;
         gap: 15px;
@@ -326,9 +366,18 @@ footer {
         font-size: 0.88em;
     }
     header {
-        flex-direction: column; /* Stack logo and filters vertically */
-        align-items: flex-start; /* Align header content to the left */
-        gap: 10px;
+        flex-direction: column; /* Stack logo, search, and filters vertically */
+        align-items: center; /* Center header content when stacked */
+        gap: 15px; /* More space between stacked items */
+        padding: 15px;
+    }
+    #logo {
+        margin-right: 0; /* Remove right margin when stacked */
+        margin-bottom: 5px;
+    }
+    .search-container {
+        width: 90%; /* Make search bar wider on small screens */
+        max-width: none; /* Remove max-width constraint */
     }
     .filters {
         width: 100%; /* Make filter container full width */
@@ -336,6 +385,7 @@ footer {
     }
     .filters button {
         margin-bottom: 5px; /* Add some space below wrapped buttons */
+        flex-grow: 1; /* Allow buttons to grow to fill space */
     }
     .modal-content {
         padding: 15px; /* Reduce modal padding on small screens */
@@ -352,41 +402,4 @@ footer {
         font-size: 1em;
     }
 }
-#searchInput {
-  width: 300px;
-  max-width: 90%;
-  padding: 8px 12px;
-  margin: 10px auto 20px;
-  display: block;
-  border-radius: 8px;
-  border: 1.5px solid #94704b;
-  font-size: 16px;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease;
-}
-
-#searchInput:focus {
-  outline: none;
-  border-color: #7a5f3c;
-}
-
-
-#searchInput {
-  width: 300px;
-  max-width: 90%;
-  padding: 8px 12px;
-  margin: 10px auto 20px;
-  display: block;
-  border-radius: 8px;
-  border: 1.5px solid #94704b;
-  font-size: 16px;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease;
-}
-
-#searchInput:focus {
-  outline: none;
-  border-color: #7a5f3c;
-}
-
 
