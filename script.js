@@ -141,6 +141,9 @@ searchInput.addEventListener('input', () => {
         }
     });
 });
+
+});
+
 // Feedback Modal Elements
 const feedbackModal = document.getElementById('feedbackModal');
 const openFeedbackModal = document.getElementById('openFeedbackModal');
@@ -176,7 +179,8 @@ feedbackForm.addEventListener('submit', async (event) => {
   const email = document.getElementById('email').value;
   const feedback = document.getElementById('feedback').value;
 
-  const feedbackAPI = 'https://api.sheetbest.com/sheets/b49560c6-2bdb-469d-a297-2bc2398ebd96'; 
+  const feedbackAPI = 'YOUR_SHEETBEST_API_URL'; // https://api.sheetbest.com/sheets/b49560c6-2bdb-469d-a297-2bc2398ebd96
+
   try {
     const response = await fetch(feedbackAPI, {
       method: 'POST',
