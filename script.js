@@ -92,3 +92,19 @@ document.getElementById('reset-filter').addEventListener('click', () => {
 });
 
 
+const searchInput = document.getElementById('searchInput');
+
+searchInput.addEventListener('input', () => {
+  const filter = searchInput.value.toLowerCase();
+
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    const name = card.querySelector('h2').textContent.toLowerCase();
+
+    if (name.includes(filter)) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+});
