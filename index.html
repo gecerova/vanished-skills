@@ -14,6 +14,7 @@
             <button data-filter="all" class="active">All</button>
             <button data-filter="Profession">Profession</button>
             <button data-filter="Craft">Craft</button>
+            <button id="reset-filter" data-filter="all">Show All</button> 
         </div>
     </header>
 
@@ -21,6 +22,17 @@
         <p id="loading-message">Loading professions...</p>
     </main>
 
+    <div id="itemModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <img id="modalImage" src="" alt="Full Profession Image">
+            <div class="modal-text">
+                <h2 id="modalTitle"></h2>
+                <p><strong>Category:</strong> <span id="modalCategory"></span></p>
+                <p id="modalDescription"></p>
+            </div>
+        </div>
+    </div>
     <script src="script.js"></script>
 
     <footer>
@@ -28,8 +40,5 @@
     </footer>
 </body>
 </html>
-
-
-<button id="reset-filter">Show All</button>
 
 
