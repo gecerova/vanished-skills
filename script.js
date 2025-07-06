@@ -84,3 +84,11 @@ function render(filter) {
         });
     });
 }
+data.sort((a, b) => a.Name.localeCompare(b.Name)); // İsimlere göre sırala
+
+
+document.getElementById('reset-filter').addEventListener('click', () => {
+  fetchData(); // Verileri tekrar getir ve tümünü göster
+});
+
+
