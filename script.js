@@ -141,3 +141,68 @@ searchInput.addEventListener('input', () => {
         }
     });
 });
+// Feedback Modal Elements
+const feedbackModal = document.getElementById('feedbackModal');
+const openFeedbackModal = document.getElementById('openFeedbackModal');
+const feedbackCloseButton = document.querySelector('.feedback-close-button');
+const feedbackForm = document.getElementById('feedbackForm');
+const feedbackMessage = document.getElementById('feedbackMessage');
+
+// Open Feedback Modal
+openFeedbackModal.addEventListener('click', () => {
+  feedbackModal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+});
+
+// Close Feedback Modal
+feedbackCloseButton.addEventListener('click', () => {
+  feedbackModal.style.display = 'none';
+  document.body.style.overflow = '';
+});
+
+// Close modal when clicking outside
+feedbackModal.addEventListener('click', (event) => {
+  if (event.target === feedbackModal) {
+    feedbackModal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+});
+
+// Handle Form Submission
+feedbackForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const feedback = document.getElementById('feedback').value;
+
+  const feedbackAPI = 'https://api.sheetbest.com/sheets/b49560c6-2bdb-469d-a297-2bc2398ebd96'; 
+  try {
+    const response = await fetch(feedbackAPI, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, feedback, timestamp: new Date().toISOString() }),
+    });
+
+    if (response.ok) {
+      feedbackMessage.style.display = 'block';
+      feedbackMessage.style.color = 'green';
+      feedbackMessage.innerText = 'Your feedback was sent successfully!';
+      feedbackForm.reset();
+      setTimeout(() => {
+        feedbackModal.style.display = 'none';
+        document.body.style.overflow = '';
+        feedbackMessage.style.display = 'none';
+      }, 2000);
+    } else {
+      throw new Error('Failed to send feedback');
+    }
+  } catch (error) {
+    feedbackMessage.style.display = 'block';
+    feedbackMessage.style.color = 'red';
+    feedbackMessage.innerText = 'An error occurred while sending feedback. Please try again.';
+    console.error('Feedback error:', error);
+  }
+});

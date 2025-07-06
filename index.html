@@ -20,6 +20,30 @@
             <button data-filter="Craft">Craft</button>
             <button id="reset-filter" data-filter="all">Show All</button> 
         </div>
+        <!-- Feedback Form (Modal) -->
+<div id="feedbackModal" class="feedback-modal">
+  <div class="feedback-modal-content">
+    <span class="feedback-close-button">×</span>
+    <h2>Feedback</h2>
+    <form id="feedbackForm">
+      <label for="name">Your Name (optional):</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name">
+      
+      <label for="email">Email (optional):</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email">
+      
+      <label for="feedback">Your Feedback:</label>
+      <textarea id="feedback" name="feedback" placeholder="Write your feedback" required></textarea>
+      
+      <button type="submit">Submit</button>
+    </form>
+    <p id="feedbackMessage" style="display: none;"></p>
+  </div>
+</div>
+
+<!-- Feedback Button -->
+<button id="openFeedbackModal">Give Feedback</button>
+
     </header>
 
     <main id="grid">
