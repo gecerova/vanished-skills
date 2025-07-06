@@ -3,9 +3,7 @@ const grid = document.getElementById('grid');
 const buttons = document.querySelectorAll('.filters button');
 
 let allData = [];
-// --- START: Added for Loading Message ---
 const loadingMessage = document.getElementById('loading-message'); 
-// --- END: Added for Loading Message ---
 
 buttons.forEach(btn => {
   btn.addEventListener('click', () => {
@@ -15,7 +13,6 @@ buttons.forEach(btn => {
   });
 });
 
-// --- START: Modified Fetch Block for Loading Message ---
 // Show loading message before fetching data
 loadingMessage.style.display = 'block'; 
 
@@ -32,24 +29,58 @@ fetch(API)
     // Display an error message if fetch fails
     loadingMessage.innerText = 'Failed to load professions. Please try again later.'; 
   });
-// --- END: Modified Fetch Block for Loading Message ---
 
 
 function render(filter) {
-  // Clear the grid before rendering new items (this will also clear the loading message if it's there)
-  grid.innerHTML = ''; 
-  allData
-    .filter(item => filter === 'all' || item.Category === filter)
-    .forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'entry';
-      div.innerHTML = `
-        ${item.Image ? `<img src="${item.Image}" alt="${item.Entry}">` : ''}
-        <div class="content">
-          <h2>${item.Entry}</h2>
-          <p><strong>Category:</strong> ${item.Category}</p>
-          ${item.Description ? `<p>${item.Description}</p>` : ''}
-        </div>`;
-      grid.appendChild(div);
+    // Clear the grid before rendering new items (this will also clear the loading message if it's there)
+    grid.innerHTML = ''; 
+    allData
+        .filter(item => filter === 'all' || item.Category === filter)
+        .forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'entry';
+
+            let descriptionContent = `<p>${item.Description}</p>`; // Default: full description
+            if (item.Description) {
+                const words = item.Description.split(' ');
+                const maxWords = 30; // Adjust this number for shorter/longer snippets
+                if (words.length > maxWords) {
+                    const truncatedText = words.slice(0, maxWords).join(' ') + '...';
+                    descriptionContent = `
+                        <p class="truncated-desc">${truncatedText} <button class="read-more-btn" data-full-text="${encodeURIComponent(item.Description)}">Read More</button></p>
+                        <p class="full-desc" style="display: none;">${item.Description} <button class="read-less-btn">Read Less</button></p>
+                    `;
+                }
+            }
+
+            div.innerHTML = `
+                ${item.Image ? `<img src="${item.Image}" alt="${item.Entry}">` : ''}
+                <div class="content">
+                    <h2>${item.Entry}</h2>
+                    <p><strong>Category:</strong> ${item.Category}</p>
+                    ${descriptionContent}
+                </div>`;
+            grid.appendChild(div);
+        });
+
+    // Add event listeners for Read More/Read Less buttons
+    document.querySelectorAll('.read-more-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const parentContent = this.closest('.content');
+            if (parentContent) { // Ensure parentContent exists
+                parentContent.querySelector('.truncated-desc').style.display = 'none';
+                parentContent.querySelector('.full-desc').style.display = 'block';
+            }
+        });
+    });
+
+    document.querySelectorAll('.read-less-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const parentContent = this.closest('.content');
+            if (parentContent) { // Ensure parentContent exists
+                parentContent.querySelector('.truncated-desc').style.display = 'block';
+                parentContent.querySelector('.full-desc').style.display = 'none';
+            }
+        });
     });
 }
