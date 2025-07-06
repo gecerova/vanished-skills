@@ -20,6 +20,29 @@
             <button data-filter="Craft">Craft</button>
             <button id="reset-filter" data-filter="all">Show All</button> 
         </div>
+        
+
+    </header>
+
+    <main id="grid">
+        <p id="loading-message">Loading professions...</p>
+        <p id="no-results-message" style="display: none;">No professions found matching your search.</p>
+    </main>
+
+    <div id="itemModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <img id="modalImage" src="" alt="Full Profession Image">
+            <div class="modal-text">
+                <h2 id="modalTitle"></h2>
+                <p id="modalDescription"></p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+
+    <footer>
+        <p>&copy; 2025 Ottoman Lost Professions. All rights reserved.</p>
         <!-- Feedback Form (Modal) -->
 <div id="feedbackModal" class="feedback-modal">
   <div class="feedback-modal-content">
@@ -43,28 +66,6 @@
 
 <!-- Feedback Button -->
 <button id="openFeedbackModal">Give Feedback</button>
-
-    </header>
-
-    <main id="grid">
-        <p id="loading-message">Loading professions...</p>
-        <p id="no-results-message" style="display: none;">No professions found matching your search.</p>
-    </main>
-
-    <div id="itemModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <img id="modalImage" src="" alt="Full Profession Image">
-            <div class="modal-text">
-                <h2 id="modalTitle"></h2>
-                <p id="modalDescription"></p>
-            </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
-
-    <footer>
-        <p>&copy; 2025 Ottoman Lost Professions. All rights reserved.</p>
     </footer>
 </body>
 </html>
