@@ -1,6 +1,7 @@
 const API = 'https://api.sheetbest.com/sheets/b99da0d5-e629-4d64-9708-05fc9b97f616';
 const grid = document.getElementById('grid');
-const filterButtons = document.querySelectorAll('.filters button');
+// Updated selector: Only select buttons that have a 'data-filter' attribute
+const filterButtons = document.querySelectorAll('.filters button[data-filter]'); 
 
 let allData = []; // Stores all fetched data
 const loadingMessage = document.getElementById('loading-message');
@@ -11,12 +12,12 @@ const noResultsMessage = document.getElementById('no-results-message');
 
 // Item Modal DOM Elements
 const itemModal = document.getElementById('itemModal');
-const closeButton = document.querySelector('.close-button'); // Primary close button for itemModal
+const closeButton = document.querySelector('#itemModal .close-button'); // More specific selector for item modal close button
 const modalImage = document.getElementById('modalImage');
 const modalTitle = document.getElementById('modalTitle');
 const modalDescription = document.getElementById('modalDescription');
 
-// NEW: About Us Modal DOM Elements
+// About Us Modal DOM Elements
 const aboutUsModal = document.getElementById('aboutUsModal');
 const openAboutUsModalButton = document.getElementById('openAboutUsModal'); // The 'About Us' button in the header
 const aboutUsCloseButton = document.getElementById('aboutUsCloseButton'); // Close button specific to About Us modal
@@ -26,9 +27,14 @@ const aboutUsCloseButton = document.getElementById('aboutUsCloseButton'); // Clo
 let currentCategoryFilter = 'all'; // Default to 'all'
 let currentSearchTerm = ''; // Default to empty search
 
-// Event listeners for filter buttons
+// Event listeners for filter buttons (excluding "About Us")
 filterButtons.forEach(btn => {
   btn.addEventListener('click', () => {
+    // Ensure "About Us" button is not accidentally set as active filter
+    if (btn.id === 'openAboutUsModal') {
+        return; // Do nothing for About Us button in this loop
+    }
+
     filterButtons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentCategoryFilter = btn.dataset.filter; // Update current category filter
@@ -112,12 +118,16 @@ function closeItemModal() { // Renamed for clarity
 }
 
 // Event listeners for close button and clicking outside the item modal
-closeButton.addEventListener('click', closeItemModal);
-itemModal.addEventListener('click', (event) => {
-    if (event.target === itemModal) { // If clicked directly on the modal overlay
-        closeItemModal();
-    }
-});
+if (closeButton) { // Ensure button exists before adding listener
+    closeButton.addEventListener('click', closeItemModal);
+}
+if (itemModal) { // Ensure modal exists before adding listener
+    itemModal.addEventListener('click', (event) => {
+        if (event.target === itemModal) { // If clicked directly on the modal overlay
+            closeItemModal();
+        }
+    });
+}
 
 
 // Render function now accepts pre-filtered items
@@ -198,6 +208,8 @@ if (openFeedbackModalBtn) {
     openFeedbackModalBtn.addEventListener('click', () => {
         feedbackModal.style.display = 'flex';
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        feedbackMessage.style.display = 'none'; // Hide any previous messages
+        feedbackForm.reset(); // Clear the form fields
     });
 }
 
@@ -227,7 +239,11 @@ if (feedbackForm) {
         const feedback = document.getElementById('feedback').value;
 
         // !! IMPORTANT: Ensure this is your actual Sheet.Best API URL for the feedback sheet.
+        // It should look something like 'https://api.sheetbest.com/sheets/YOUR_SHEET_ID_HERE'
+        // Double-check this ID from your Sheet.Best dashboard for the feedback sheet.
         const feedbackAPI = 'https://api.sheetbest.com/sheets/b49560c6-2bdb-469d-a297-2bc2398ebd96'; 
+        console.log('Attempting to send feedback...');
+        console.log('Sending data:', { name, email, feedback, timestamp: new Date().toISOString() });
 
         try {
             const response = await fetch(feedbackAPI, {
@@ -238,7 +254,11 @@ if (feedbackForm) {
                 body: JSON.stringify({ name, email, feedback, timestamp: new Date().toISOString() }),
             });
 
-            if (response.ok) {
+            console.log('Response status:', response.status);
+            const responseData = await response.json(); // Try to parse response even if not OK
+            console.log('Response data:', responseData);
+
+            if (response.ok) { // Status code 200-299
                 feedbackMessage.style.display = 'block';
                 feedbackMessage.style.color = 'green';
                 feedbackMessage.innerText = 'Your feedback was sent successfully!';
@@ -251,20 +271,27 @@ if (feedbackForm) {
                     document.body.style.overflow = '';
                 }, 2000); 
             } else {
-                throw new Error('Failed to send feedback');
+                // Handle non-OK responses from Sheet.Best
+                console.error('Sheet.Best error response:', responseData);
+                throw new Error(`Failed to send feedback: ${response.status} - ${responseData.message || 'Unknown error'}`);
             }
         } catch (error) {
             feedbackMessage.style.display = 'block';
             feedbackMessage.style.color = 'red';
             feedbackMessage.innerText = 'An error occurred while sending feedback. Please try again.';
-            console.error('Feedback error:', error);
+            console.error('Feedback submission error:', error);
         }
     });
 }
 
-// NEW: About Us Modal Logic
+// About Us Modal Logic (This should now work correctly)
 if (openAboutUsModalButton) {
     openAboutUsModalButton.addEventListener('click', () => {
+        // Remove active class from other filter buttons if About Us is clicked
+        filterButtons.forEach(b => b.classList.remove('active'));
+        // Add active class to About Us button
+        openAboutUsModalButton.classList.add('active');
+
         aboutUsModal.style.display = 'flex';
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
     });
@@ -274,6 +301,11 @@ if (aboutUsCloseButton) {
     aboutUsCloseButton.addEventListener('click', () => {
         aboutUsModal.style.display = 'none';
         document.body.style.overflow = ''; // Restore background scrolling
+        // Optionally, remove active class from About Us when closed, or keep it.
+        // For a modal, typically it's not considered an "active filter".
+        openAboutUsModalButton.classList.remove('active');
+        // If you want "All" to be active again after closing About Us, you'd trigger it here:
+        // document.querySelector('.filters button[data-filter="all"]').click();
     });
 }
 
@@ -282,6 +314,7 @@ if (aboutUsModal) {
         if (event.target === aboutUsModal) {
             aboutUsModal.style.display = 'none';
             document.body.style.overflow = '';
+            openAboutUsModalButton.classList.remove('active');
         }
     });
 }
