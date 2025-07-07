@@ -202,20 +202,14 @@ function render(itemsToRender) {
 
 // Feedback Modal JS
 const feedbackModal = document.getElementById('feedbackModal');
-const openFeedbackModalBtn = document.getElementById('openFeedbackModal');
+// const openFeedbackModalBtn = document.getElementById('openFeedbackModal'); // Button removed
 const feedbackCloseButton = document.querySelector('.feedback-close-button');
 const feedbackForm = document.getElementById('feedbackForm');
 const feedbackMessage = document.getElementById('feedbackMessage');
 
-if (openFeedbackModalBtn) {
-    openFeedbackModalBtn.addEventListener('click', () => {
-        console.log("Feedback icon clicked!"); // Log
-        feedbackModal.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
-        feedbackMessage.style.display = 'none'; // Hide any previous messages
-        feedbackForm.reset(); // Clear the form fields
-    });
-}
+// Removed: if (openFeedbackModalBtn) { ... } block that handled clicking the feedback icon.
+// The modal can still be opened programmatically, e.g., by calling:
+// feedbackModal.style.display = 'flex'; document.body.style.overflow = 'hidden';
 
 if (feedbackCloseButton) {
     feedbackCloseButton.addEventListener('click', () => {
