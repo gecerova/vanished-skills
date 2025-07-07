@@ -29,9 +29,12 @@ let currentSearchTerm = ''; // Default to empty search
 
 // Event listeners for filter buttons (excluding "About Us")
 filterButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', (event) => { // Added event parameter
+    console.log(`Filter button clicked: ${btn.dataset.filter}`); // Log which filter button was clicked
+    
     // Ensure "About Us" button is not accidentally set as active filter
     if (btn.id === 'openAboutUsModal') {
+        event.preventDefault(); // Defensive: prevent any default button behavior
         return; // Do nothing for About Us button in this loop
     }
 
@@ -92,7 +95,7 @@ function applyFiltersAndRender() {
     render(filteredData);
 
     // Show/hide no results message
-    // Only show if filteredData.length is 0 AND there's an active filter or search term
+    // Only show if filteredData.length === 0 AND there's an active filter or search term
     if (filteredData.length === 0 && (currentCategoryFilter !== 'all' || currentSearchTerm !== '')) {
         noResultsMessage.style.display = 'block';
     } else {
@@ -206,6 +209,7 @@ const feedbackMessage = document.getElementById('feedbackMessage');
 
 if (openFeedbackModalBtn) {
     openFeedbackModalBtn.addEventListener('click', () => {
+        console.log("Feedback icon clicked!"); // Log
         feedbackModal.style.display = 'flex';
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
         feedbackMessage.style.display = 'none'; // Hide any previous messages
@@ -273,12 +277,14 @@ if (feedbackForm) {
             } else {
                 // Handle non-OK responses from Sheet.Best
                 console.error('Sheet.Best error response:', responseData);
-                throw new Error(`Failed to send feedback: ${response.status} - ${responseData.message || 'Unknown error'}`);
+                feedbackMessage.style.display = 'block';
+                feedbackMessage.style.color = 'red';
+                feedbackMessage.innerText = `Failed to send feedback: ${responseData.message || 'Please check your Sheet.Best API URL and column names.'}`;
             }
         } catch (error) {
             feedbackMessage.style.display = 'block';
             feedbackMessage.style.color = 'red';
-            feedbackMessage.innerText = 'An error occurred while sending feedback. Please try again.';
+            feedbackMessage.innerText = 'An error occurred while sending feedback. Please check console for details.';
             console.error('Feedback submission error:', error);
         }
     });
@@ -286,7 +292,10 @@ if (feedbackForm) {
 
 // About Us Modal Logic (This should now work correctly)
 if (openAboutUsModalButton) {
-    openAboutUsModalButton.addEventListener('click', () => {
+    openAboutUsModalButton.addEventListener('click', (event) => { // Added event parameter
+        event.preventDefault(); // Crucial: Prevent any default behavior that might cause navigation
+        console.log("About Us button clicked!"); // Log
+
         // Remove active class from other filter buttons if About Us is clicked
         filterButtons.forEach(b => b.classList.remove('active'));
         // Add active class to About Us button
