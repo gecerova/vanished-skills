@@ -7,15 +7,20 @@ const loadingMessage = document.getElementById('loading-message');
 
 // Search Bar & No Results Elements
 const searchInput = document.getElementById('searchInput');
-const noResultsMessage = document.getElementById('no-results-message'); // Correctly declared
+const noResultsMessage = document.getElementById('no-results-message');
 
-// Modal DOM Elements
+// Item Modal DOM Elements
 const itemModal = document.getElementById('itemModal');
-const closeButton = document.querySelector('.close-button');
+const closeButton = document.querySelector('.close-button'); // Primary close button for itemModal
 const modalImage = document.getElementById('modalImage');
 const modalTitle = document.getElementById('modalTitle');
-// const modalCategory = document.getElementById('modalCategory'); // Removed as it's not in HTML
 const modalDescription = document.getElementById('modalDescription');
+
+// NEW: About Us Modal DOM Elements
+const aboutUsModal = document.getElementById('aboutUsModal');
+const openAboutUsModalButton = document.getElementById('openAboutUsModal'); // The 'About Us' button in the header
+const aboutUsCloseButton = document.getElementById('aboutUsCloseButton'); // Close button specific to About Us modal
+
 
 // State Variables for current filters
 let currentCategoryFilter = 'all'; // Default to 'all'
@@ -81,7 +86,7 @@ function applyFiltersAndRender() {
     render(filteredData);
 
     // Show/hide no results message
-    // Only show if filteredData is empty AND there's an active filter or search term
+    // Only show if filteredData.length is 0 AND there's an active filter or search term
     if (filteredData.length === 0 && (currentCategoryFilter !== 'all' || currentSearchTerm !== '')) {
         noResultsMessage.style.display = 'block';
     } else {
@@ -90,8 +95,8 @@ function applyFiltersAndRender() {
 }
 
 
-// Modal Functions
-function openModal(item) {
+// Item Modal Functions
+function openItemModal(item) { // Renamed for clarity
     modalImage.src = item.Image || '';
     modalImage.alt = item.Entry || 'Profession Image';
     modalTitle.innerText = item.Entry || 'No Title';
@@ -101,16 +106,16 @@ function openModal(item) {
     document.body.style.overflow = 'hidden'; // Prevent background scrolling
 }
 
-function closeModal() {
+function closeItemModal() { // Renamed for clarity
     itemModal.style.display = 'none';
     document.body.style.overflow = ''; // Restore background scrolling
 }
 
-// Event listeners for close button and clicking outside the modal
-closeButton.addEventListener('click', closeModal);
+// Event listeners for close button and clicking outside the item modal
+closeButton.addEventListener('click', closeItemModal);
 itemModal.addEventListener('click', (event) => {
     if (event.target === itemModal) { // If clicked directly on the modal overlay
-        closeModal();
+        closeItemModal();
     }
 });
 
@@ -149,9 +154,9 @@ function render(itemsToRender) {
                 ${descriptionContent}
             </div>`;
         
-        // Add click listener to each entry card to open the modal
+        // Add click listener to each entry card to open the item modal
         div.addEventListener('click', () => {
-            openModal(item);
+            openItemModal(item); // Call the specific item modal function
         });
 
         grid.appendChild(div);
@@ -182,9 +187,9 @@ function render(itemsToRender) {
 }
 
 
-// --- NEW: Feedback Modal JS ---
+// Feedback Modal JS
 const feedbackModal = document.getElementById('feedbackModal');
-const openFeedbackModalBtn = document.getElementById('openFeedbackModal'); // Renamed for clarity
+const openFeedbackModalBtn = document.getElementById('openFeedbackModal');
 const feedbackCloseButton = document.querySelector('.feedback-close-button');
 const feedbackForm = document.getElementById('feedbackForm');
 const feedbackMessage = document.getElementById('feedbackMessage');
@@ -221,7 +226,7 @@ if (feedbackForm) {
         const email = document.getElementById('email').value;
         const feedback = document.getElementById('feedback').value;
 
-        // !! IMPORTANT: Replace 'YOUR_SHEETBEST_API_URL_FOR_FEEDBACK' with your actual Sheet.Best API URL for the feedback sheet.
+        // !! IMPORTANT: Ensure this is your actual Sheet.Best API URL for the feedback sheet.
         const feedbackAPI = 'https://api.sheetbest.com/sheets/b49560c6-2bdb-469d-a297-2bc2398ebd96'; 
 
         try {
@@ -253,6 +258,30 @@ if (feedbackForm) {
             feedbackMessage.style.color = 'red';
             feedbackMessage.innerText = 'An error occurred while sending feedback. Please try again.';
             console.error('Feedback error:', error);
+        }
+    });
+}
+
+// NEW: About Us Modal Logic
+if (openAboutUsModalButton) {
+    openAboutUsModalButton.addEventListener('click', () => {
+        aboutUsModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    });
+}
+
+if (aboutUsCloseButton) {
+    aboutUsCloseButton.addEventListener('click', () => {
+        aboutUsModal.style.display = 'none';
+        document.body.style.overflow = ''; // Restore background scrolling
+    });
+}
+
+if (aboutUsModal) {
+    aboutUsModal.addEventListener('click', (event) => {
+        if (event.target === aboutUsModal) {
+            aboutUsModal.style.display = 'none';
+            document.body.style.overflow = '';
         }
     });
 }
