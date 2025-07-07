@@ -18,8 +18,8 @@
             <button data-filter="all" class="active">All</button>
             <button data-filter="Profession">Profession</button>
             <button data-filter="Craft">Craft</button>
-            <button id="reset-filter" data-filter="all">Show All</button> 
-        </div>
+            </div>
+        <button id="openAboutUsModal" class="header-button">About Us</button>
     </header>
 
     <main id="grid">
@@ -37,37 +37,48 @@
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
-
+    
     <footer>
         <p>&copy; 2025 Ottoman Lost Professions. All rights reserved.</p>
     </footer>
+
     <div id="feedbackModal" class="feedback-modal">
-  <div class="feedback-modal-content">
-    <span class="feedback-close-button">×</span>
-    <h2>Feedback</h2>
-    <form id="feedbackForm">
-      <label for="name">Your Name (optional):</label>
-      <input type="text" id="name" name="name" placeholder="Enter your name">
-      
-      <label for="email">Email (optional):</label>
-      <input type="email" id="email" name="email" placeholder="Enter your email">
-      
-      <label for="feedback">Your Feedback:</label>
-      <textarea id="feedback" name="feedback" placeholder="Write your feedback" required></textarea>
-      
-      <button type="submit">Submit</button>
-    </form>
-    <p id="feedbackMessage" style="display: none;"></p>
-  </div>
-</div>
+        <div class="feedback-modal-content">
+            <span class="feedback-close-button">×</span>
+            <h2>Feedback</h2>
+            <form id="feedbackForm">
+                <label for="name">Your Name (optional):</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name">
+                
+                <label for="email">Email (optional):</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email">
+                
+                <label for="feedback">Your Feedback:</label>
+                <textarea id="feedback" name="feedback" placeholder="Write your feedback" required></textarea>
+                
+                <button type="submit">Submit</button>
+            </form>
+            <p id="feedbackMessage" style="display: none;"></p>
+        </div>
+    </div>
 
-<button id="openFeedbackModal" class="feedback-icon">
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.38 8.38 0 0 1-8.5-8.5 8.38 8.38 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"></path>
-    <path d="M16.5 20.5l-4.5 3v-3h-3"></path>
-  </svg>
-</button>
+    <button id="openFeedbackModal" class="feedback-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.38 8.38 0 0 1-8.5-8.5 8.38 8.38 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"></path>
+            <path d="M16.5 20.5l-4.5 3v-3h-3"></path>
+        </svg>
+    </button>
 
+    <div id="aboutUsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="aboutUsCloseButton">&times;</span>
+            <h2>About Our Virtual Mini-Museum</h2>
+            <p>Welcome to our virtual mini-museum! This project showcases a curated selection of historical ceramic artifacts from the Ottoman Empire. Each piece reflects the rich artistic heritage, craftsmanship, and cultural layers that developed between the 14th and early 20th centuries.</p>
+            <p>The Ottoman Empire was a vast and diverse society where craftsmanship held a central place in both economic production and cultural expression. Many of these traditional crafts were passed down through generations via master-apprentice relationships (usta-çırak ilişkisi) and were often organized within the guild system (lonca teşkilatı). These crafts not only fulfilled practical needs but also served as markers of social identity, aesthetic refinement, and spiritual devotion.</p>
+            <p>Our aim is to offer an accessible and informative glimpse into the traditions of the Ottoman world. The selected items vary in origin, function, and style — from architectural tiles to household pottery — yet all reveal the empire’s unique aesthetic and cultural identity. Explore the collection below and discover how Ottoman culture served not only as a source of glory but also became a lasting symbol of beauty, power, and tradition.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
