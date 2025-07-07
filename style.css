@@ -68,7 +68,7 @@ header {
     justify-content: flex-end; /* Align to the right */
 }
 
-.filters button, .header-button { /* Apply these styles to all filter buttons and the new header-button */
+.filters button { /* Apply these styles to all filter buttons including About Us */
     padding: 0.5rem 1rem;
     border: none;
     background-color: #eee; /* Default button background */
@@ -79,7 +79,7 @@ header {
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s ease; /* Smooth transitions */
 }
 
-.filters button:hover, .header-button:hover {
+.filters button:hover {
     background-color: #ddd; /* Slightly darker on hover */
     transform: translateY(-2px); /* Slight lift on hover */
 }
@@ -89,18 +89,6 @@ header {
     color: white;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Add subtle shadow when active */
 }
-
-/* Specific style for the new header button */
-.header-button {
-    background-color: var(--primary-color); /* Use primary color for "About Us" */
-    color: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.header-button:hover {
-    background-color: var(--primary-dark); /* Darker on hover */
-}
-
 
 /* --- Grid Layout for Professions --- */
 #grid {
@@ -320,7 +308,7 @@ footer {
     .entry p {
         font-size: 0.92em; /* Adjust body text size */
     }
-    .filters button, .header-button {
+    .filters button {
         padding: 8px 12px; /* Smaller padding for buttons */
         font-size: 0.85em;
     }
@@ -384,7 +372,7 @@ footer {
         width: 100%; /* Make filter container full width */
         justify-content: center; /* Center filter buttons */
     }
-    .filters button, .header-button {
+    .filters button {
         margin-bottom: 5px; /* Add some space below wrapped buttons */
         flex-grow: 1; /* Allow buttons to grow to fill space */
     }
