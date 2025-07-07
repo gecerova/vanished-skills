@@ -68,7 +68,7 @@ header {
     justify-content: flex-end; /* Align to the right */
 }
 
-.filters button {
+.filters button, .header-button { /* Apply these styles to all filter buttons and the new header-button */
     padding: 0.5rem 1rem;
     border: none;
     background-color: #eee; /* Default button background */
@@ -79,7 +79,7 @@ header {
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s ease; /* Smooth transitions */
 }
 
-.filters button:hover {
+.filters button:hover, .header-button:hover {
     background-color: #ddd; /* Slightly darker on hover */
     transform: translateY(-2px); /* Slight lift on hover */
 }
@@ -90,15 +90,15 @@ header {
     box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Add subtle shadow when active */
 }
 
-/* Specific style for the reset button, inheriting general button styles */
-#reset-filter {
-    background-color: var(--primary-color); /* Use primary color for "Show All" by default */
+/* Specific style for the new header button */
+.header-button {
+    background-color: var(--primary-color); /* Use primary color for "About Us" */
     color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-#reset-filter:hover {
+.header-button:hover {
     background-color: var(--primary-dark); /* Darker on hover */
-    transform: translateY(-2px);
 }
 
 
@@ -212,11 +212,11 @@ footer {
     box-shadow: 0 -2px 5px rgba(0,0,0,0.05); /* Subtle shadow above footer */
 }
 
-/* --- Modal Styles --- */
+/* --- General Modal Styles (applies to itemModal, feedbackModal, aboutUsModal) --- */
 .modal {
     display: none; /* Hidden by default, JavaScript will change to 'flex' to show */
     position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top (higher than other content) */
+    z-index: 1000; /* Sit on top (higher than other content, feedback modal is 1001) */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -225,7 +225,6 @@ footer {
     background-color: rgba(0,0,0,0.7); /* Black w/ opacity - dim background */
     backdrop-filter: blur(5px); /* Optional: blur background for a modern look */
     -webkit-backdrop-filter: blur(5px); /* For Safari */
-    /* display: flex;  -- This is set by JS when modal is active */
     justify-content: center;
     align-items: center;
     padding: 20px; /* Padding around the modal content */
@@ -253,18 +252,20 @@ footer {
     display: block; /* Remove extra space below image */
 }
 
-.modal-text h2 {
+.modal-text h2, .modal-content h2 { /* Apply to h2 in all modals */
     font-size: 2em; /* Larger title for modal */
     margin-top: 0;
     margin-bottom: 10px;
     color: var(--primary-dark);
+    font-family: 'Montserrat', sans-serif; /* Consistent font */
 }
 
-.modal-text p {
+.modal-text p, .modal-content p { /* Apply to p in all modals */
     font-size: 1.1em; /* Slightly larger text for readability */
     line-height: 1.7;
     margin-bottom: 15px;
     color: var(--text-light);
+    font-family: 'Open Sans', sans-serif; /* Consistent font */
 }
 
 .modal-text p strong {
@@ -319,7 +320,7 @@ footer {
     .entry p {
         font-size: 0.92em; /* Adjust body text size */
     }
-    .filters button {
+    .filters button, .header-button {
         padding: 8px 12px; /* Smaller padding for buttons */
         font-size: 0.85em;
     }
@@ -383,7 +384,7 @@ footer {
         width: 100%; /* Make filter container full width */
         justify-content: center; /* Center filter buttons */
     }
-    .filters button {
+    .filters button, .header-button {
         margin-bottom: 5px; /* Add some space below wrapped buttons */
         flex-grow: 1; /* Allow buttons to grow to fill space */
     }
@@ -395,42 +396,27 @@ footer {
         right: 15px;
         font-size: 30px;
     }
-    .modal-text h2 {
+    .modal-text h2, .modal-content h2 {
         font-size: 1.6em;
     }
-    .modal-text p {
+    .modal-text p, .modal-content p {
         font-size: 1em;
     }
 }
 
-/* --- NEW: Feedback Modal Styles --- */
+/* --- Feedback Modal Specific Styles (inherits from .modal and .modal-content) --- */
 .feedback-modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1001; /* Higher than item modal */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.6); /* Darker overlay */
-    backdrop-filter: blur(3px); /* Slightly less blur than main modal */
+    z-index: 1001; /* Higher than general modals */
+    background-color: rgba(0,0,0,0.6); /* Slightly darker overlay */
+    backdrop-filter: blur(3px); /* Slightly less blur */
     -webkit-backdrop-filter: blur(3px);
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
 }
 
 .feedback-modal-content {
-    background-color: var(--card-bg);
-    margin: auto;
+    max-width: 500px; /* Smaller max-width for feedback form */
     padding: 25px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    position: relative;
-    max-width: 500px;
-    width: 90%;
-    animation: fadeInScale 0.3s ease-out forwards;
 }
 
 .feedback-close-button {
@@ -450,18 +436,13 @@ footer {
 }
 
 .feedback-modal-content h2 {
-    font-family: 'Montserrat', sans-serif; /* Consistent with site headings */
-    color: var(--primary-dark);
-    margin-top: 0;
     margin-bottom: 20px;
     text-align: center;
 }
 
 .feedback-modal-content form label {
-    display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: var(--text-dark);
 }
 
 .feedback-modal-content form input[type="text"],
@@ -474,7 +455,6 @@ footer {
     border-radius: 5px;
     font-size: 1em;
     box-sizing: border-box; /* Include padding in width */
-    font-family: 'Open Sans', sans-serif; /* Consistent with site body text */
 }
 
 .feedback-modal-content form textarea {
@@ -494,7 +474,6 @@ footer {
     display: block; /* Make button take full width */
     width: 100%;
     transition: background-color 0.3s ease;
-    font-family: 'Open Sans', sans-serif; /* Consistent with site body text */
 }
 
 .feedback-modal-content form button[type="submit"]:hover {
@@ -507,7 +486,6 @@ footer {
     border-radius: 5px;
     text-align: center;
     font-weight: 600;
-    font-family: 'Open Sans', sans-serif; /* Consistent with site body text */
 }
 
 /* --- Feedback Icon (Comment Balloon) Styles --- */
