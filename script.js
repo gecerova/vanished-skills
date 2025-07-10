@@ -129,6 +129,22 @@ function openItemModal(item) {
             </p>
         `;
     }
+// ✅ Custom content for Tinsmithing
+if (item.Entry === "Tinsmithing") {
+    descriptionHTML += `
+        <hr>
+        <h3>📍 Notable Location: Kahramanmaraş, Türkiye</h3>
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d101597.4241848104!2d36.8714168!3d37.5736119!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x152e7c0a7287a7a3%3A0x58267e2dd3ae1fd6!2sKahramanmara%C5%9F!5e0!3m2!1str!2str!4v1720700000000!5m2!1str!2str" 
+            width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy">
+        </iframe>
+        <h3>👤 Famous Craftsman: Usta Ali Rıza</h3>
+        <p>
+            Ali Rıza Usta is a renowned tinsmith from Kahramanmaraş, celebrated for preserving traditional methods of crafting and repairing tinware. 
+            He is known for mentoring new generations in the trade and his shop has become a local heritage site.
+        </p>
+    `;
+}
 
     modalDescription.innerHTML = descriptionHTML;
     itemModal.style.display = 'flex';
