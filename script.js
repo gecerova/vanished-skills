@@ -1,4 +1,5 @@
 function openItemModal(item) {
+    console.log("DEBUG: Entry clicked:", item.Entry);
     modalImage.src = item.Image || '';
     modalImage.alt = item.Entry || 'Profession Image';
     modalTitle.innerText = item.Entry || 'No Title';
