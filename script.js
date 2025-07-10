@@ -1,66 +1,89 @@
 const API = 'https://api.sheetbest.com/sheets/b99da0d5-e629-4d64-9708-05fc9b97f616';
 const grid = document.getElementById('grid');
+// Updated selector: Only select buttons that have a 'data-filter' attribute
 const filterButtons = document.querySelectorAll('.filters button[data-filter]'); 
 
-let allData = [];
+let allData = []; // Stores all fetched data
 const loadingMessage = document.getElementById('loading-message');
+
+// Search Bar & No Results Elements
 const searchInput = document.getElementById('searchInput');
 const noResultsMessage = document.getElementById('no-results-message');
+
+// Item Modal DOM Elements
 const itemModal = document.getElementById('itemModal');
-const closeButton = document.querySelector('#itemModal .close-button');
+const closeButton = document.querySelector('#itemModal .close-button'); // More specific selector for item modal close button
 const modalImage = document.getElementById('modalImage');
 const modalTitle = document.getElementById('modalTitle');
 const modalDescription = document.getElementById('modalDescription');
+
+// About Us Modal DOM Elements
 const aboutUsModal = document.getElementById('aboutUsModal');
-const openAboutUsModalButton = document.getElementById('openAboutUsModal');
-const aboutUsCloseButton = document.getElementById('aboutUsCloseButton');
+const openAboutUsModalButton = document.getElementById('openAboutUsModal'); // The 'About Us' button in the header
+const aboutUsCloseButton = document.getElementById('aboutUsCloseButton'); // Close button specific to About Us modal
 
-let currentCategoryFilter = 'all';
-let currentSearchTerm = '';
 
+// State Variables for current filters
+let currentCategoryFilter = 'all'; // Default to 'all'
+let currentSearchTerm = ''; // Default to empty search
+
+// Event listeners for filter buttons (excluding "About Us")
 filterButtons.forEach(btn => {
-  btn.addEventListener('click', (event) => {
-    console.log(`Filter button clicked: ${btn.dataset.filter}`);
+  btn.addEventListener('click', (event) => { // Added event parameter
+    console.log(`Filter button clicked: ${btn.dataset.filter}`); // Log which filter button was clicked
     
+    // Ensure "About Us" button is not accidentally set as active filter
     if (btn.id === 'openAboutUsModal') {
-        event.preventDefault();
-        return;
+        event.preventDefault(); // Defensive: prevent any default button behavior
+        return; // Do nothing for About Us button in this loop
     }
 
     filterButtons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    currentCategoryFilter = btn.dataset.filter;
-    applyFiltersAndRender();
+    currentCategoryFilter = btn.dataset.filter; // Update current category filter
+    applyFiltersAndRender(); // Re-render with new category filter and existing search term
   });
 });
 
+// Event listener for search input
 searchInput.addEventListener('input', () => {
-    currentSearchTerm = searchInput.value.toLowerCase().trim();
-    applyFiltersAndRender();
+    currentSearchTerm = searchInput.value.toLowerCase().trim(); // Update current search term
+    applyFiltersAndRender(); // Re-render with existing category filter and new search term
 });
 
+// Show loading message before fetching data
 loadingMessage.style.display = 'block';
 
 fetch(API)
   .then(r => r.json())
   .then(data => {
     allData = data;
+    // Sort data by Entry (Profession Name) alphabetically after fetching
     allData.sort((a, b) => a.Entry.localeCompare(b.Entry)); 
+
+    // Hide loading message after data is successfully loaded
     loadingMessage.style.display = 'none';
+    
+    // Initial render with current filters (which are 'all' and '')
     applyFiltersAndRender(); 
   })
   .catch(e => {
     console.error('Fetch error:', e);
+    // Display an error message if fetch fails
     loadingMessage.innerText = 'Failed to load professions. Please try again later.';
   });
 
+
+// Central function to apply all filters and render
 function applyFiltersAndRender() {
     let filteredData = allData;
 
+    // 1. Apply category filter
     if (currentCategoryFilter !== 'all') {
         filteredData = filteredData.filter(item => item.Category === currentCategoryFilter);
     }
 
+    // 2. Apply search filter
     if (currentSearchTerm) {
         filteredData = filteredData.filter(item => 
             (item.Entry && item.Entry.toLowerCase().includes(currentSearchTerm)) ||
@@ -68,8 +91,11 @@ function applyFiltersAndRender() {
         );
     }
 
+    // Render the filtered data
     render(filteredData);
 
+    // Show/hide no results message
+    // Only show if filteredData.length === 0 AND there's an active filter or search term
     if (filteredData.length === 0 && (currentCategoryFilter !== 'all' || currentSearchTerm !== '')) {
         noResultsMessage.style.display = 'block';
     } else {
@@ -77,65 +103,53 @@ function applyFiltersAndRender() {
     }
 }
 
-function openItemModal(item) {
-    console.log("DEBUG: Entry clicked:", item.Entry);
+
+// Item Modal Functions
+function openItemModal(item) { // Renamed for clarity
     modalImage.src = item.Image || '';
     modalImage.alt = item.Entry || 'Profession Image';
     modalTitle.innerText = item.Entry || 'No Title';
-
-    let descriptionHTML = item.Description || 'No description available.';
-
-    if (item.Entry === "Architectural Decorative Painting (Nakkaşlık)") {
-        descriptionHTML += `
-            <hr>
-            <h3>📍 Notable Location: Nakkaşhane, Topkapı Palace (Istanbul)</h3>
-            <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12092.213496747912!2d28.9786761472534!3d41.012754172973946!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14caba5db5de8bcb%3A0x1cb2d0636f255db6!2sTopkap%C4%B1%20Palace!5e0!3m2!1str!2str!4v1720632588000!5m2!1str!2str" 
-                width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy">
-            </iframe>
-            <h3>👤 Famous Craftsman: Nakkaş Osman</h3>
-            <p>
-                Nakkaş Osman was the chief Ottoman court painter in the 16th century. 
-                He is known for his work on imperial manuscripts such as the <em>Zafername</em> and <em>Siyer-i Nabi</em>. 
-                His stylistic clarity and detailed architectural decoration left a lasting legacy in Ottoman miniature and palace design.
-            </p>
-        `;
-    }
-
-    modalDescription.innerHTML = descriptionHTML;
+    modalDescription.innerText = item.Description || 'No description available.';
+    
     itemModal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
 }
 
-function closeItemModal() {
+function closeItemModal() { // Renamed for clarity
     itemModal.style.display = 'none';
-    document.body.style.overflow = '';
+    document.body.style.overflow = ''; // Restore background scrolling
 }
 
-if (closeButton) {
+// Event listeners for close button and clicking outside the item modal
+if (closeButton) { // Ensure button exists before adding listener
     closeButton.addEventListener('click', closeItemModal);
 }
-if (itemModal) {
+if (itemModal) { // Ensure modal exists before adding listener
     itemModal.addEventListener('click', (event) => {
-        if (event.target === itemModal) {
+        if (event.target === itemModal) { // If clicked directly on the modal overlay
             closeItemModal();
         }
     });
 }
 
-function render(itemsToRender) {
-    grid.innerHTML = '';
 
-    if (itemsToRender.length === 0) return;
+// Render function now accepts pre-filtered items
+function render(itemsToRender) {
+    grid.innerHTML = ''; // Clear the grid
+
+    if (itemsToRender.length === 0) {
+        // The noResultsMessage visibility is handled by applyFiltersAndRender()
+        return; 
+    }
 
     itemsToRender.forEach(item => {
         const div = document.createElement('div');
         div.className = 'entry';
 
-        let descriptionContent = `<p>${item.Description || ''}</p>`;
+        let descriptionContent = `<p>${item.Description || ''}</p>`; // Default: full description, handle undefined
         if (item.Description) {
             const words = item.Description.split(' ');
-            const maxWords = 30;
+            const maxWords = 30; // Adjust this number for shorter/longer snippets
             if (words.length > maxWords) {
                 const truncatedText = words.slice(0, maxWords).join(' ') + '...';
                 descriptionContent = `
@@ -152,17 +166,19 @@ function render(itemsToRender) {
                 <p><strong>Category:</strong> ${item.Category || 'Unknown'}</p>
                 ${descriptionContent}
             </div>`;
-
+        
+        // Add click listener to each entry card to open the item modal
         div.addEventListener('click', () => {
-            openItemModal(item);
+            openItemModal(item); // Call the specific item modal function
         });
 
         grid.appendChild(div);
     });
 
+    // Add event listeners for Read More/Read Less buttons
     document.querySelectorAll('.read-more-btn').forEach(button => {
         button.addEventListener('click', function(event) {
-            event.stopPropagation();
+            event.stopPropagation(); // Prevent card click from triggering modal
             const parentContent = this.closest('.content');
             if (parentContent) {
                 parentContent.querySelector('.truncated-desc').style.display = 'none';
@@ -173,12 +189,135 @@ function render(itemsToRender) {
 
     document.querySelectorAll('.read-less-btn').forEach(button => {
         button.addEventListener('click', function(event) {
-            event.stopPropagation();
+            event.stopPropagation(); // Prevent card click from triggering modal
             const parentContent = this.closest('.content');
             if (parentContent) {
                 parentContent.querySelector('.truncated-desc').style.display = 'block';
                 parentContent.querySelector('.full-desc').style.display = 'none';
             }
         });
+    });
+}
+
+
+// Feedback Modal JS
+const feedbackModal = document.getElementById('feedbackModal');
+// const openFeedbackModalBtn = document.getElementById('openFeedbackModal'); // Button removed
+const feedbackCloseButton = document.querySelector('.feedback-close-button');
+const feedbackForm = document.getElementById('feedbackForm');
+const feedbackMessage = document.getElementById('feedbackMessage');
+
+// Removed: if (openFeedbackModalBtn) { ... } block that handled clicking the feedback icon.
+// The modal can still be opened programmatically, e.g., by calling:
+// feedbackModal.style.display = 'flex'; document.body.style.overflow = 'hidden';
+
+if (feedbackCloseButton) {
+    feedbackCloseButton.addEventListener('click', () => {
+        feedbackModal.style.display = 'none';
+        document.body.style.overflow = ''; // Restore background scrolling
+    });
+}
+
+if (feedbackModal) {
+    feedbackModal.addEventListener('click', (event) => {
+        if (event.target === feedbackModal) {
+            feedbackModal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    });
+}
+
+// Handle Form Submission (requires your specific Sheet.Best API URL for feedback)
+if (feedbackForm) {
+    feedbackForm.addEventListener('submit', async function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const feedback = document.getElementById('feedback').value;
+
+        // !! IMPORTANT: Ensure this is your actual Sheet.Best API URL for the feedback sheet.
+        // It should look something like 'https://api.sheetbest.com/sheets/YOUR_SHEET_ID_HERE'
+        // Double-check this ID from your Sheet.Best dashboard for the feedback sheet.
+        const feedbackAPI = 'https://api.sheetbest.com/sheets/b49560c6-2bdb-469d-a297-2bc2398ebd96'; 
+        console.log('Attempting to send feedback...');
+        console.log('Sending data:', { name, email, feedback, timestamp: new Date().toISOString() });
+
+        try {
+            const response = await fetch(feedbackAPI, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, email, feedback, timestamp: new Date().toISOString() }),
+            });
+
+            console.log('Response status:', response.status);
+            const responseData = await response.json(); // Try to parse response even if not OK
+            console.log('Response data:', responseData);
+
+            if (response.ok) { // Status code 200-299
+                feedbackMessage.style.display = 'block';
+                feedbackMessage.style.color = 'green';
+                feedbackMessage.innerText = 'Your feedback was sent successfully!';
+                feedbackForm.reset(); // Clear the form
+                
+                // Hide message and close modal after a few seconds
+                setTimeout(() => {
+                    feedbackMessage.style.display = 'none';
+                    feedbackModal.style.display = 'none'; // Close modal after submission
+                    document.body.style.overflow = '';
+                }, 2000); 
+            } else {
+                // Handle non-OK responses from Sheet.Best
+                console.error('Sheet.Best error response:', responseData);
+                feedbackMessage.style.display = 'block';
+                feedbackMessage.style.color = 'red';
+                feedbackMessage.innerText = `Failed to send feedback: ${responseData.message || 'Please check your Sheet.Best API URL and column names.'}`;
+            }
+        } catch (error) {
+            feedbackMessage.style.display = 'block';
+            feedbackMessage.style.color = 'red';
+            feedbackMessage.innerText = 'An error occurred while sending feedback. Please check console for details.';
+            console.error('Feedback submission error:', error);
+        }
+    });
+}
+
+// About Us Modal Logic (This should now work correctly)
+if (openAboutUsModalButton) {
+    openAboutUsModalButton.addEventListener('click', (event) => { // Added event parameter
+        event.preventDefault(); // Crucial: Prevent any default behavior that might cause navigation
+        console.log("About Us button clicked!"); // Log
+
+        // Remove active class from other filter buttons if About Us is clicked
+        filterButtons.forEach(b => b.classList.remove('active'));
+        // Add active class to About Us button
+        openAboutUsModalButton.classList.add('active');
+
+        aboutUsModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    });
+}
+
+if (aboutUsCloseButton) {
+    aboutUsCloseButton.addEventListener('click', () => {
+        aboutUsModal.style.display = 'none';
+        document.body.style.overflow = ''; // Restore background scrolling
+        // Optionally, remove active class from About Us when closed, or keep it.
+        // For a modal, typically it's not considered an "active filter".
+        openAboutUsModalButton.classList.remove('active');
+        // If you want "All" to be active again after closing About Us, you'd trigger it here:
+        // document.querySelector('.filters button[data-filter="all"]').click();
+    });
+}
+
+if (aboutUsModal) {
+    aboutUsModal.addEventListener('click', (event) => {
+        if (event.target === aboutUsModal) {
+            aboutUsModal.style.display = 'none';
+            document.body.style.overflow = '';
+            openAboutUsModalButton.classList.remove('active');
+        }
     });
 }
