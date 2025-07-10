@@ -146,12 +146,6 @@ if (item.Entry === "Tinsmithing") {
         </p>
     `;
 }
-
-
-    modalDescription.innerHTML = descriptionHTML;
-    itemModal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
 // ✅ Custom content for Coppersmithing
 if (item.Entry === "Coppersmithing") {
     descriptionHTML += `
@@ -858,6 +852,11 @@ if (item.Entry === "Bookbinding") {
     `;
 }
 
+
+    modalDescription.innerHTML = descriptionHTML;
+    itemModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
 
 function closeItemModal() { // Renamed for clarity
     itemModal.style.display = 'none';
